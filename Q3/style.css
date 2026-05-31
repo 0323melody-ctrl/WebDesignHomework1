@@ -1,1 +1,150 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+body {
+    background-color: #f3f0e9; /* 復古高質感雜誌灰色調 */
+    font-family: "Georgia", "Noto Serif TC", serif; /* 雜誌感襯線體 */
+    color: #222;
+    padding: 60px 20px;
+}
+
+/* ==========================================
+   1. 桌面版 Grid 佈局 (預設)
+   ========================================== */
+.magazine-grid {
+    display: grid;
+    max-width: 1000px; /* 符合 900-1100px 限制 */
+    margin: 0 auto;
+    
+    /* 題目要求：使用 fr、repeat()、minmax() 與 gap */
+    grid-template-columns: repeat(3, minmax(250px, 1fr));
+    grid-template-rows: auto auto auto;
+    gap: 30px;
+    
+    /* 為了在手機版能用 grid-template-areas 重新排版，桌面版也先設定對應名稱 */
+    grid-template-areas: 
+        "title hero hero"
+        "pullquote body sidebar"
+        "caption body sidebar";
+}
+
+/* 指定各區塊對應的網格有名區稱 */
+.block-title     { grid-area: title; }
+.block-hero      { grid-area: hero; }
+.block-pullquote { grid-area: pullquote; }
+.block-body      { grid-area: body; }
+.block-sidebar   { grid-area: sidebar; }
+.block-caption   { grid-area: caption; }
+
+/* ==========================================
+   各區塊細部設計樣式
+   ========================================== */
+
+/* 標題 */
+.block-title {
+    border-top: 3px solid #000;
+    padding-top: 15px;
+}
+.issue-tag {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #777;
+}
+.block-title h1 {
+    font-size: 32px;
+    margin-top: 15px;
+    line-height: 1.3;
+}
+
+/* 大圖 (跨兩格欄位，已在 grid-template-areas 中達成) */
+.block-hero .hero-img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+}
+
+/* 引言 */
+.block-pullquote {
+    font-size: 18px;
+    font-style: italic;
+    color: #8c2d19;
+    border-left: 2px solid #8c2d19;
+    padding-left: 15px;
+    display: flex; /* 題目允許：僅在格子內部進行微調對齊 */
+    align-items: center;
+}
+
+/* 內文 (垂直跨兩列：在 areas 中佔據了兩橫排) */
+.block-body {
+    font-size: 15px;
+    line-height: 1.8;
+    text-align: justify;
+}
+.block-body p {
+    margin-bottom: 15px;
+}
+
+/* 側欄 */
+.block-sidebar {
+    background-color: #e6e2d8;
+    padding: 20px;
+    border-radius: 2px;
+}
+.block-sidebar h3 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+}
+.block-sidebar ul {
+    list-style: none;
+}
+.block-sidebar li {
+    font-size: 13px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+/* 小圖與圖說 */
+.block-caption img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+.block-caption figcaption {
+    font-size: 11px;
+    color: #666;
+    margin-top: 8px;
+    line-height: 1.4;
+}
+
+/* ==========================================
+   2. 手機版 Grid 佈局 (≤ 480px)
+   ========================================== */
+@media (max-width: 480px) {
+    .magazine-grid {
+        /* 題目要求：使用第二組 grid-template-areas 重構成單欄直排 */
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-template-areas: 
+            "title"
+            "hero"
+            "pullquote"
+            "body"
+            "caption"
+            "sidebar";
+        gap: 20px;
+    }
+    
+    .block-title h1 {
+        font-size: 28px;
+    }
+    
+    .block-hero .hero-img {
+        height: 220px;
+    }
+}
